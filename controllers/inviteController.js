@@ -14,6 +14,12 @@ exports.registerEmail = async (req, res) => {
     }
 
     try {
+        // Check if the email already exists
+        const existingInvite = await Invite.findOne({ email });
+        if (existingInvite) {
+            return res.status(409).json({ message: 'Email already registered.' }); // 409 Conflict
+        }
+
         // Create a new Invite document
         const newInvite = new Invite({ email });
         await newInvite.save();
@@ -22,6 +28,6 @@ exports.registerEmail = async (req, res) => {
         return res.status(200).json({ registrationLink });
     } catch (error) {
         console.error('Error saving invite:', error);
-        return res.status(500).json({ message: 'Server error.' });
+        return res.status(500).json({ message: 'Server error.', error: error.message });
     }
 };

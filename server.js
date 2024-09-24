@@ -31,8 +31,8 @@ app.use('/api/invite', inviteRoutes);
 
 // Centralized error handling middleware
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(err.status || 500).json({ message: 'An internal server error occurred.' });
+    console.error(err.stack); // Log the error stack
+    res.status(err.status || 500).json({ message: 'An internal server error occurred.', error: err.message }); // Send error message to client
 });
 
 // Graceful shutdown
@@ -41,6 +41,7 @@ process.on('SIGINT', () => {
     process.exit(0);
 });
 
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
