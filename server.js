@@ -10,13 +10,30 @@ const inviteRoutes = require('./routes/inviteRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000; // Set your port number here
+const MONGODB_URI = process.env.MONGODB_URI; // Load MongoDB URI from .envrequire('dotenv').config(); // Load environment variables
+const express = require('express');
+const cors = require('cors'); // Require cors
+const bodyParser = require('body-parser');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const connectDB = require('./config/db'); // Ensure this path is correct
+const inviteRoutes = require('./routes/inviteRoutes');
+
+const app = express();
+const PORT = process.env.PORT || 5000; // Set your port number here
 const MONGODB_URI = process.env.MONGODB_URI; // Load MongoDB URI from .env
 
 // Connect to MongoDB
 connectDB(MONGODB_URI);
 
+// CORS options
+const corsOptions = {
+    origin: 'https://66f3a451de5df2cc33fc67b4--newregisteration.netlify.app', // Your Netlify app URL
+    optionsSuccessStatus: 200 // For legacy browser support
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions)); // Use CORS middleware
 app.use(helmet()); // Add security headers
 app.use(morgan('dev')); // Log HTTP requests
 app.use(bodyParser.json());
@@ -41,8 +58,7 @@ process.on('SIGINT', () => {
     process.exit(0);
 });
 
-// Start the server and log the live URL
+// Start the server
 app.listen(PORT, () => {
-    const host = process.env.NODE_ENV === 'production' ? 'https://registeration>.up.railway.app' : `http://localhost:${PORT}`;
-    console.log(`Server is running on ${host}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
