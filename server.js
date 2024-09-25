@@ -10,17 +10,6 @@ const inviteRoutes = require('./routes/inviteRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000; // Set your port number here
-const MONGODB_URI = process.env.MONGODB_URI; // Load MongoDB URI from .envrequire('dotenv').config(); // Load environment variables
-const express = require('express');
-const cors = require('cors'); // Require cors
-const bodyParser = require('body-parser');
-const helmet = require('helmet');
-const morgan = require('morgan');
-const connectDB = require('./config/db'); // Ensure this path is correct
-const inviteRoutes = require('./routes/inviteRoutes');
-
-const app = express();
-const PORT = process.env.PORT || 5000; // Set your port number here
 const MONGODB_URI = process.env.MONGODB_URI; // Load MongoDB URI from .env
 
 // Connect to MongoDB
@@ -36,7 +25,7 @@ const corsOptions = {
 app.use(cors(corsOptions)); // Use CORS middleware
 app.use(helmet()); // Add security headers
 app.use(morgan('dev')); // Log HTTP requests
-app.use(bodyParser.json());
+app.use(bodyParser.json()); // Parse incoming JSON requests
 
 // Health check endpoint
 app.get('/health', (req, res) => {
