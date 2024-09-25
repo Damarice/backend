@@ -41,7 +41,8 @@ process.on('SIGINT', () => {
     process.exit(0);
 });
 
-// Start the server
+// Start the server and log the live URL
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    const host = process.env.NODE_ENV === 'production' ? 'https://registeration>.up.railway.app' : `http://localhost:${PORT}`;
+    console.log(`Server is running on ${host}`);
 });
